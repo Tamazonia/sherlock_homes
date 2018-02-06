@@ -10,10 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206104907) do
+ActiveRecord::Schema.define(version: 20180206120809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "clients", force: :cascade do |t|
+    t.string "name"
+    t.string "first_name"
+    t.string "address"
+    t.integer "postal_code"
+    t.string "place"
+    t.string "phone1"
+    t.string "phone2"
+    t.string "email"
+    t.date "date_of_birth"
+    t.datetime "follow_up"
+    t.string "remarks"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_clients_on_user_id"
+  end
+
+  create_table "estates", force: :cascade do |t|
+    t.string "estate_type"
+    t.string "details"
+    t.string "street"
+    t.integer "postal_code"
+    t.string "place"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "client_id"
+    t.index ["client_id"], name: "index_estates_on_client_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -32,4 +62,6 @@ ActiveRecord::Schema.define(version: 20180206104907) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "clients", "users"
+  add_foreign_key "estates", "clients"
 end
